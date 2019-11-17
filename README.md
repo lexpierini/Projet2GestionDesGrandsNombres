@@ -16,4 +16,4 @@ Ainsi le plus grand nombre aura donc autant de chiffres que la longueur maximale
 
 Le projet prévoit également de proposer les opérations usuelles : addition, soustraction, multiplication et division de grands nombres 
 
-Regarder le fichier "Enonce_du_projet_-_Introduction_a_C" avec la description complete du pprojet d'école.
+Regarder le fichier "Enonce_du_projet_-_Introduction_a_C.pdf" avec la description complete du projet d'école.
