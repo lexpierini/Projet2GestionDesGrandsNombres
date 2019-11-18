@@ -26,6 +26,7 @@ void menuGeneral();
 void menuAddition2Nombres();
 void addition2Nombres();
 void menuSoustraction2Nombres();
+void soustraction2Nombres();
 void menuMultiplication2Nombres();
 void menuDivision2Nombres();
 void menuMinimum2Nombre();
@@ -39,14 +40,14 @@ int main()
 {
 	nettoyageEcran(); // Nécessaire pour utiliser la fonction "system(clear)" Win/Linux/Mac.
 	system(clear);
+	char r = ("1"-"9")-"48";
+	cout << r;
 
-	saisirGN();
-
-	//addition2Nombres();
+	//soustraction2Nombres();
 	cout << endl << endl;
 	return 0;
 	
-	menuGeneral();
+	//menuGeneral();
 }
 
 
@@ -63,22 +64,19 @@ void saisirGN()
 
 	for (int i = 0; i < n1.size(); i++)
 	{
-		if (isdigit(n1[i])) {
-
-			if ((n1[i] == '0' || n1[i] == '-')  && zeroGauche)
+		if ((n1[i] == '0' || n1[i] == '-')  && zeroGauche || isalpha(n1[i]) )
+		{
+			if (n1[i] == '-')
 			{
-				if (n1[i] == '-')
-				{
-					estNegatif = true;
-				}
-				continue;
-			} 
-			else
-			{
-				zeroGauche = false;
-				n1Propre = n1Propre + n1[i];
+				estNegatif = true;
 			}
-		}
+			continue;
+		} 
+		else
+		{
+			zeroGauche = false;
+			n1Propre = n1Propre + n1[i];
+		}	
 	}
 
 	if (estNegatif == true)
@@ -87,8 +85,6 @@ void saisirGN()
 	}
 	 
 	cout << n1Propre;
-	cout << endl << endl;
-
 }
 
 void menuGeneral()
@@ -259,42 +255,64 @@ int menuQuitter()
 void addition2Nombres()
 {
 	GNOMBRE n1 = "9999";
-	GNOMBRE n2 = "111";
-	GNOMBRE resultat = "";
-	GNOMBRE tailPlusGrand = "";
-	GNOMBRE tailPlusPetit = "";
+	GNOMBRE n2 = "-111";
+	GNOMBRE resultat;
 	int temp;
-	
-	/*bool reste = false;
-	bool estPlusGrand = n1.size() > n2.size();
-	estPlusGrand = n1.size() > n2.size();*/
-	
-	/*if (n1.size() > n2.size())
+	bool reste = false;
+	bool n1EstPlusGrand;
+	bool n1EstNegatif;
+	bool n2EstNegatif;
+
+	if (n1[0] == '-')
 	{
-		tailPlusGrand = n1;
-	} else
+		n1[0] = '0';
+		n1EstNegatif = true;
+	} 
+	else
 	{
-		tailPlusPetit = n2;
+		n1EstNegatif = false;
 	}
 
-	for (int i = 0; i < tailPlusGrand.size(); i++)
+	if (n2[0] == '-')
 	{
-		temp = (tailPlusGrand[tailPlusGrand.size() - 1 - i] - 48) + (tailPlusPetit[tailPlusPetit.size() - 1 - i])
+		n2[0] = '0';
+		n2EstNegatif = true;
+	}
+	else
+	{
+		n2EstNegatif = false;
 	}
 	
+	n1EstPlusGrand = n1.size() >= n2.size();
 	
-	for (int i = 0; i < (estPlusGrand ? n1.size():n2.size()); i++)
+	for (int i = 0; i < (n1EstPlusGrand ? n1.size():n2.size()); i++)
 	{
-	
-		temp = (n1[n1.size() - 1 - i] - 48) + (n2[n2.size() - 1 - i] - 48) + reste;
-		
-		if (temp > 9)
+		if (n1EstPlusGrand = true)
 		{
+			if (n2[n2.size() -1 - i] == '\0')
+			{
+				n2 = '0' + n2;
+			}
+
+			temp = (n1[n1.size() - 1 - i] - 48) + (n2[n2.size() - 1 - i] - 48) + reste;
+		} 
+		else
+		{
+			if (n1[n1.size() -1 - i] == '\0')
+			{
+				n1 = '0' + n1;
+			}
+
+			temp = (n2[n2.size() - 1 - i] - 48) + (n1[n1.size() - 1 - i] - 48) + reste;
+		}
+				
+		if (temp > 9) {
 			temp = temp - 10;
 			resultat = to_string(temp) + resultat;
 			reste = true;
 			temp = 0;
-		} else
+		} 
+		else
 		{
 			resultat = to_string(temp) + resultat;
 			reste = false;
@@ -308,22 +326,69 @@ void addition2Nombres()
 	}
 	
 	cout << resultat;
+}
+
+void soustraction2Nombres()
+{
+	GNOMBRE n1 = "1111";
+	GNOMBRE n2 = "999";
+	GNOMBRE resultat;
+	int temp;
+	bool emprunt = false;
+	bool n1EstPlusGrand;
+	bool n1EstNegatif;
+	bool n2EstNegatif;
+
+	if (n1[0] == '-')
+	{
+		n1[0] = '0';
+		n1EstNegatif = true;
+	} 
+	else
+	{
+		n1EstNegatif = false;
+	}
+
+	if (n2[0] == '-')
+	{
+		n2[0] = '0';
+		n2EstNegatif = true;
+	}
+	else
+	{
+		n2EstNegatif = false;
+	}
 	
-	
-	
-	
-	/*for (int i = 0 ; i < (estPlusGrand ? n1.size():n2.size()); i++){
-		if ((n2.size() - 1 - i) > 0) {
-			return;
+	n1EstPlusGrand = n1.size() >= n2.size();
+
+	for (int i = 0; i < (n1EstPlusGrand ? n1.size():n2.size()); i++)
+	{
+		if (n1EstPlusGrand = true)
+		{
+			if (n2[n2.size() -1 - i] == '\0')
+			{
+				n2 = '0' + n2;
+			}
+		} 
+		else
+		{
+			if (n1[n1.size() -1 - i] == '\0')
+			{
+				n1 = '0' + n1;
+			}
 		}
 
-		temp = ((char)(n1[n1.size() - 1 - i]) - '0') + ((char)(n2[n2.size() - 1 - i]) - '0');
-		cout << temp << endl;
-		if (temp > 10)
-		{
-			
-		}
-	}*/
+		if ((n1[n1.size() -1 - i]) > (n2[n2.size() -1 - i]))
+			{
+				temp = (n1[n1.size() - 1 - i] - 48) - (n2[n2.size() - 1 - i] - 48);
+			}
+			else
+			{
+				temp = (10 + (n1[n1.size() - 1 - i] - 48)) - (n2[n2.size() - 1 - i] - 48);
+				emprunt = true;
+			}
+	}
+	cout << resultat;
 }
 
 
