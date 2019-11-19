@@ -7,6 +7,12 @@ using namespace std;
 typedef string GNOMBRE;
 
 
+//Variables Globales.
+GNOMBRE n1;
+GNOMBRE n2;
+GNOMBRE resultat;
+
+
 // Nécessaire pour utiliser la fonction "system(clear)" Win/Linux/Mac.
 void nettoyageEcran();
 const char* clear; 
@@ -33,58 +39,57 @@ void menuMinimum2Nombre();
 void menuProgramme1();
 int menuQuitter();
 
-void saisirGN();
+GNOMBRE saisirGN();
 
 
 int main() 
 {
 	nettoyageEcran(); // Nécessaire pour utiliser la fonction "system(clear)" Win/Linux/Mac.
 	system(clear);
-	char r = ("1"-"9")-"48";
-	cout << r;
 
-	//soustraction2Nombres();
-	cout << endl << endl;
-	return 0;
+	addition2Nombres();
 	
 	//menuGeneral();
+	cout << endl << endl;
+	return 0;
 }
 
 
 //LISTE DES FONCTIONS
 
-void saisirGN()
+GNOMBRE saisirGN()
 {
-	GNOMBRE n1 = "0";
-	GNOMBRE n1Propre;
+	GNOMBRE n;
+	GNOMBRE nPropre;
 	bool zeroGauche = true;
 	bool estNegatif = false;
-	cout << "Donnez 1 Grand Nombre: ";
-	getline(cin, n1);
+	//cout << "Donnez 1 Grand Nombre: ";
+	getline(cin, n);
 
-	for (int i = 0; i < n1.size(); i++)
+	for (int i = 0; i < n.size(); i++)
 	{
-		if ((n1[i] == '0' || n1[i] == '-')  && zeroGauche || isalpha(n1[i]) )
+		if ((n[i] == '0' || n[i] == '-')  && zeroGauche || isalpha(n[i]) )
 		{
-			if (n1[i] == '-')
+			if (n[i] == '-')
 			{
 				estNegatif = true;
 			}
+
 			continue;
 		} 
 		else
 		{
 			zeroGauche = false;
-			n1Propre = n1Propre + n1[i];
+			nPropre = nPropre + n[i];
 		}	
 	}
 
 	if (estNegatif == true)
 	{
-		n1Propre = '-' + n1Propre;
+		nPropre = '-' + nPropre;
 	}
-	 
-	cout << n1Propre;
+
+	return nPropre;
 }
 
 void menuGeneral()
@@ -148,12 +153,15 @@ void menuGeneral()
 
 void menuAddition2Nombres()
 {
+
 	system(clear);
 	cout << "PROJET 2 - GESTION DES GRANDS NOMBRES" << endl;
 	cout << setfill('-') << setw(51) << ("-") << endl;
 	cout << "1) Addition de 2 nombres" << endl;
-	cout << "   Donner le Nombre 1: " << endl;
-	cout << "   Donner le Nombre 2: " << endl;
+	cout << "   Donner le Nombre 1: ";
+	n1 = saisirGN();
+	cout << "   Donner le Nombre 2: ";
+	n2 = saisirGN();
 	cout << "   Resultat " << setfill('.') << setw(11) << (": ");
 
 	cout << endl;
@@ -254,9 +262,9 @@ int menuQuitter()
 
 void addition2Nombres()
 {
-	GNOMBRE n1 = "9999";
-	GNOMBRE n2 = "-111";
-	GNOMBRE resultat;
+	n1 = "9999";
+	n2 = "111";
+	resultat = "";
 	int temp;
 	bool reste = false;
 	bool n1EstPlusGrand;
