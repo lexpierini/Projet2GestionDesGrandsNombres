@@ -39,7 +39,9 @@ void menuMinimum2Nombre();
 void menuProgramme1();
 int menuQuitter();
 
-GNOMBRE saisirGN();
+GNOMBRE estSuperieurOuEgal(GNOMBRE, GNOMBRE);
+GNOMBRE saisirGn();
+GNOMBRE afficherGn(GNOMBRE n);
 
 
 int main() 
@@ -47,9 +49,11 @@ int main()
 	nettoyageEcran(); // Nécessaire pour utiliser la fonction "system(clear)" Win/Linux/Mac.
 	system(clear);
 
-	addition2Nombres();
 	
-	//menuGeneral();
+
+	//addition2Nombres();
+	
+	menuGeneral();
 	cout << endl << endl;
 	return 0;
 }
@@ -57,13 +61,38 @@ int main()
 
 //LISTE DES FONCTIONS
 
-GNOMBRE saisirGN()
+GNOMBRE saisirGn()
 {
+	char c;
 	GNOMBRE n;
 	GNOMBRE nPropre;
 	bool zeroGauche = true;
 	bool estNegatif = false;
-	//cout << "Donnez 1 Grand Nombre: ";
+	cout << "   Donnez un Grand Nombre: ";
+	
+	while (c != '\n')
+	{
+		c = _getch();
+
+		if (isdigit(c) || c == '-')
+		{
+			if (c == '-' && estNegatif == false) 
+			{
+				estNegatif = true;
+				n = n + c;
+				cout << c;
+			} else if (c == '0' && zeroGauche == )
+			{
+				/* code */
+			}		
+			
+		}
+		
+		
+	}
+	
+
+	/*
 	getline(cin, n);
 
 	for (int i = 0; i < n.size(); i++)
@@ -87,9 +116,17 @@ GNOMBRE saisirGN()
 	if (estNegatif == true)
 	{
 		nPropre = '-' + nPropre;
-	}
-
+	}	
 	return nPropre;
+	*/
+cout << n;
+	return n;
+}
+
+GNOMBRE afficherGn(GNOMBRE n)
+{
+	cout << n;
+	return n;
 }
 
 void menuGeneral()
@@ -158,10 +195,11 @@ void menuAddition2Nombres()
 	cout << "PROJET 2 - GESTION DES GRANDS NOMBRES" << endl;
 	cout << setfill('-') << setw(51) << ("-") << endl;
 	cout << "1) Addition de 2 nombres" << endl;
-	cout << "   Donner le Nombre 1: ";
-	n1 = saisirGN();
-	cout << "   Donner le Nombre 2: ";
-	n2 = saisirGN();
+	//cout << "   Donner le Nombre 1: ";
+	n1 = saisirGn();
+	cout << n1;
+	//cout << "   Donner le Nombre 2: ";
+	n2 = saisirGn();
 	cout << "   Resultat " << setfill('.') << setw(11) << (": ");
 
 	cout << endl;
@@ -221,6 +259,7 @@ void menuDivision2Nombres()
 
 void menuMinimum2Nombre()
 {
+	
 	system(clear);
 	cout << "PROJET 2 - GESTION DES GRANDS NOMBRES" << endl;
 	cout << setfill('-') << setw(51) << ("-") << endl;
@@ -295,11 +334,13 @@ void addition2Nombres()
 	
 	for (int i = 0; i < (n1EstPlusGrand ? n1.size():n2.size()); i++)
 	{
-		if (n1EstPlusGrand = true)
+		if (n1EstPlusGrand == true)
 		{
+			cout << "fui acionado";
 			if (n2[n2.size() -1 - i] == '\0')
 			{
 				n2 = '0' + n2;
+				
 			}
 
 			temp = (n1[n1.size() - 1 - i] - 48) + (n2[n2.size() - 1 - i] - 48) + reste;
@@ -328,7 +369,7 @@ void addition2Nombres()
 		}
 	}
 
-	if (reste = true)
+	if (reste == true)
 	{
 		resultat = "1" + resultat; 
 	}
@@ -371,7 +412,7 @@ void soustraction2Nombres()
 
 	for (int i = 0; i < (n1EstPlusGrand ? n1.size():n2.size()); i++)
 	{
-		if (n1EstPlusGrand = true)
+		if (n1EstPlusGrand == true)
 		{
 			if (n2[n2.size() -1 - i] == '\0')
 			{
