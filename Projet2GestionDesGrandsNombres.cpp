@@ -39,10 +39,13 @@ void menuMinimum2Nombre();
 void menuProgramme1();
 int menuQuitter();
 
-bool estInferieurOuEgal(GNOMBRE gn1, GNOMBRE gn2);
-bool estSuperieurOuEgal(GNOMBRE gn1, GNOMBRE gn2);
+bool estInferieur(GNOMBRE, GNOMBRE);
+bool estSuperieur(GNOMBRE, GNOMBRE);
+bool estSEgal(GNOMBRE, GNOMBRE);
+bool estInferieurOuEgal(GNOMBRE, GNOMBRE);
+bool estSuperieurOuEgal(GNOMBRE, GNOMBRE);
 GNOMBRE saisirGn();
-GNOMBRE afficherGn(GNOMBRE n);
+GNOMBRE afficherGn(GNOMBRE);
 
 
 int main() 
@@ -52,7 +55,7 @@ int main()
 
 	//addition2Nombres();
 	
-	cout << estInferieurOuEgal("991", "99999");
+	cout << estSuperieur("998", "999");
 	
 
 	//menuGeneral();
@@ -60,7 +63,72 @@ int main()
 	return 0;
 }
 
+
 //LISTE DES FONCTIONS
+
+bool estInfrieur(GNOMBRE gn1, GNOMBRE gn2)
+{
+	bool temp;
+
+	if (gn1.size() < gn2.size())
+	{
+		return true;
+	} 
+	else
+	{
+		for (int i = 0; i < gn1.size(); i++)
+		{
+			if (gn1[i] < gn2[i])
+			{
+				temp = true;
+			}
+			else
+			{
+				temp = false;
+			}			
+		}
+		return temp;
+	}
+}
+
+bool estSuperieur(GNOMBRE gn1, GNOMBRE gn2)
+{
+	bool temp;
+
+	if (gn1.size() > gn2.size())
+	{
+		return true;
+	} 
+	else
+	{
+		for (int i = 0; i < gn1.size(); i++)
+		{
+			if (gn1[i] > gn2[i])
+			{
+				temp = true;
+			}
+			else
+			{
+				temp = false;
+			}			
+		}
+		return temp;
+	}
+}
+
+bool estEgal(GNOMBRE gn1, GNOMBRE gn2)
+{
+	bool temp;
+
+	if (gn1 == gn2)
+	{
+		return true;
+	} 
+	else
+	{
+		return false;
+	}
+}
 
 bool estInferieurOuEgal(GNOMBRE gn1, GNOMBRE gn2)
 {
