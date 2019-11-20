@@ -39,7 +39,8 @@ void menuMinimum2Nombre();
 void menuProgramme1();
 int menuQuitter();
 
-GNOMBRE estSuperieurOuEgal(GNOMBRE, GNOMBRE);
+bool estInferieurOuEgal(GNOMBRE gn1, GNOMBRE gn2);
+bool estSuperieurOuEgal(GNOMBRE gn1, GNOMBRE gn2);
 GNOMBRE saisirGn();
 GNOMBRE afficherGn(GNOMBRE n);
 
@@ -49,17 +50,75 @@ int main()
 	nettoyageEcran(); // Nécessaire pour utiliser la fonction "system(clear)" Win/Linux/Mac.
 	system(clear);
 
-	
-
 	//addition2Nombres();
 	
-	menuGeneral();
+	cout << estInferieurOuEgal("991", "99999");
+	
+
+	//menuGeneral();
 	cout << endl << endl;
 	return 0;
 }
 
-
 //LISTE DES FONCTIONS
+
+bool estInferieurOuEgal(GNOMBRE gn1, GNOMBRE gn2)
+{
+	bool temp;
+
+	if (gn1.size() < gn2.size())
+	{
+		return true;
+	} 
+	else if (gn1.size() == gn2.size())
+	{
+		for (int i = 0; i < gn1.size(); i++)
+		{
+			if (gn1[i] <= gn2[i])
+			{
+				temp = true;
+			}
+			else
+			{
+				temp = false;
+			}			
+		}
+		return temp;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool estSuperieurOuEgal(GNOMBRE gn1, GNOMBRE gn2)
+{
+	bool temp;
+
+	if (gn1.size() > gn2.size())
+	{
+		return true;
+	} 
+	else if (gn1.size() == gn2.size())
+	{
+		for (int i = 0; i < gn1.size(); i++)
+		{
+			if (gn1[i] >= gn2[i])
+			{
+				temp = true;
+			}
+			else
+			{
+				temp = false;
+			}			
+		}
+		return temp;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 GNOMBRE saisirGn()
 {
@@ -81,45 +140,19 @@ GNOMBRE saisirGn()
 				estNegatif = true;
 				n = n + c;
 				cout << c;
-			} else if (c == '0' && zeroGauche == )
+			} 
+			else if (c == '0' && zeroGauche == true)
 			{
-				/* code */
-			}		
-			
+				continue;
+			}	
+			else if (isdigit(c))
+			{
+				zeroGauche = false;
+				n = n + c;
+				cout << c;
+			} 
 		}
-		
-		
 	}
-	
-
-	/*
-	getline(cin, n);
-
-	for (int i = 0; i < n.size(); i++)
-	{
-		if ((n[i] == '0' || n[i] == '-')  && zeroGauche || isalpha(n[i]) )
-		{
-			if (n[i] == '-')
-			{
-				estNegatif = true;
-			}
-
-			continue;
-		} 
-		else
-		{
-			zeroGauche = false;
-			nPropre = nPropre + n[i];
-		}	
-	}
-
-	if (estNegatif == true)
-	{
-		nPropre = '-' + nPropre;
-	}	
-	return nPropre;
-	*/
-cout << n;
 	return n;
 }
 
@@ -195,13 +228,11 @@ void menuAddition2Nombres()
 	cout << "PROJET 2 - GESTION DES GRANDS NOMBRES" << endl;
 	cout << setfill('-') << setw(51) << ("-") << endl;
 	cout << "1) Addition de 2 nombres" << endl;
-	//cout << "   Donner le Nombre 1: ";
 	n1 = saisirGn();
-	cout << n1;
-	//cout << "   Donner le Nombre 2: ";
+	cout << endl;
 	n2 = saisirGn();
-	cout << "   Resultat " << setfill('.') << setw(11) << (": ");
-
+	cout << endl;
+	cout << "   Resultat " << setfill('.') << setw(15) << (": ");
 	cout << endl;
 	cout << setfill('-') << setw(51) << ("-") << endl;
 	cout << "Appuyez sur une touche pour revenir au menu g\x82n\x82ral\n";
