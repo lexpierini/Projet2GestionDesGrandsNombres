@@ -7,7 +7,7 @@ Début du projet: 01 novembre 2019.
 Date de remise : 01 décembre 2019.
 
 
-On se propose de créer le type GNOMBRE permettant de gérer les grands nombres entiers]-00, +00[. Pour le faire nous décidons d’utiliser le type string en effectuant la déclaration suivante : 
+On se propose de créer le type GNOMBRE permettant de gérer les grands nombres entiers. Pour le faire nous décidons d’utiliser le type string en effectuant la déclaration suivante : 
 
 typedef string GNOMBRE; 
 
