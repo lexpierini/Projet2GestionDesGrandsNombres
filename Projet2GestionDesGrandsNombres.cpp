@@ -7,12 +7,6 @@ using namespace std;
 typedef string GNOMBRE;
 
 
-//Variables Globales.
-GNOMBRE n1;
-GNOMBRE n2;
-GNOMBRE resultat;
-
-
 // Nécessaire pour utiliser la fonction "system(clear)" Win/Linux/Mac.
 void nettoyageEcran();
 const char* clear; 
@@ -28,9 +22,23 @@ struct termios old, current;
 
 
 // DÉCLARATION DES FONCTIONS
-void menuGeneral();
+
+GNOMBRE somme(GNOMBRE, GNOMBRE);
+
+
+bool estInferieur(GNOMBRE, GNOMBRE); //Compare deux valeurs en retournant true si la première valeur est inférieure à la seconde.
+bool estSuperieur(GNOMBRE, GNOMBRE); //Compare deux valeurs en renvoyant la valeur true si la première valeur est supérieure à la seconde.
+bool estSEgal(GNOMBRE, GNOMBRE); //Compare deux valeurs en retournant true si la première valeur est égale à la seconde.
+bool estInferieurOuEgal(GNOMBRE, GNOMBRE); //Compare deux valeurs en retournant true si la première valeur est égale ou inférieure à la seconde.
+bool estSuperieurOuEgal(GNOMBRE, GNOMBRE); //Compare deux valeurs en retournant true si la première valeur est supérieure ou égale à la seconde.
+GNOMBRE saisirGn(); //Capture uniquement des nombres ou le signe '-' à stocker dans une variable.
+GNOMBRE afficherGn(GNOMBRE);
+bool estNegatif(GNOMBRE); //Vérifie un nombre en retournant vrai si sa valeur est négative.
+bool taillePlusGrand(GNOMBRE, GNOMBRE);
+
+
+void menuGeneral(); //Affiche le menu principal avec des options à choisir.
 void menuAddition2Nombres();
-void addition2Nombres();
 void menuSoustraction2Nombres();
 void soustraction2Nombres();
 void menuMultiplication2Nombres();
@@ -39,26 +47,22 @@ void menuMinimum2Nombre();
 void menuProgramme1();
 int menuQuitter();
 
-bool estInferieur(GNOMBRE, GNOMBRE);
-bool estSuperieur(GNOMBRE, GNOMBRE);
-bool estSEgal(GNOMBRE, GNOMBRE);
-bool estInferieurOuEgal(GNOMBRE, GNOMBRE);
-bool estSuperieurOuEgal(GNOMBRE, GNOMBRE);
-GNOMBRE saisirGn();
-GNOMBRE afficherGn(GNOMBRE);
-
 
 int main() 
 {
-	nettoyageEcran(); // Nécessaire pour utiliser la fonction "system(clear)" Win/Linux/Mac.
+	nettoyageEcran(); //Nécessaire pour utiliser la fonction "system(clear)" Win/Linux/Mac.
 	system(clear);
 
-	//addition2Nombres();
+	menuGeneral();
+
+
+
 	
-	cout << estSuperieur("998", "999");
 	
 
-	//menuGeneral();
+	//cout << somme("999", "111");
+
+	
 	cout << endl << endl;
 	return 0;
 }
@@ -66,28 +70,154 @@ int main()
 
 //LISTE DES FONCTIONS
 
+/*GNOMBRE somme(GNOMBRE gn1, GNOMBRE gn2);
+{
+	GNOMBRE resultat;
+	int temp;
+	
+	bool reste = false;
+	bool n1EstPlusGrand;
+	bool n1EstNegatif;
+	bool n2EstNegatif;
+
+	if (gn1[0] == '-')
+	{
+		gn1[0] = '0';
+		n1EstNegatif = true;
+	} 
+	else
+	{
+		n1EstNegatif = false;
+	}
+
+	if (gn2[0] == '-')
+	{
+		gn2[0] = '0';
+		n2EstNegatif = true;
+	}
+	else
+	{
+		n2EstNegatif = false;
+	}
+	
+	n1EstPlusGrand = gn1.size() >= gn2.size();
+	
+	for (int i = 0; i < (n1EstPlusGrand ? gn1.size():gn2.size()); i++)
+	{
+		if (n1EstPlusGrand == true)
+		{
+			cout << "fui acionado";
+			if (n2[n2.size() -1 - i] == '\0')
+			{
+				n2 = '0' + n2;
+				
+			}
+
+			temp = (n1[n1.size() - 1 - i] - 48) + (n2[n2.size() - 1 - i] - 48) + reste;
+		} 
+		else
+		{
+			if (n1[n1.size() -1 - i] == '\0')
+			{
+				n1 = '0' + n1;
+			}
+
+			temp = (n2[n2.size() - 1 - i] - 48) + (n1[n1.size() - 1 - i] - 48) + reste;
+		}
+				
+		if (temp > 9) {
+			temp = temp - 10;
+			resultat = to_string(temp) + resultat;
+			reste = true;
+			temp = 0;
+		} 
+		else
+		{
+			resultat = to_string(temp) + resultat;
+			reste = false;
+			temp = 0;
+		}
+	}
+
+	if (reste == true)
+	{
+		resultat = "1" + resultat; 
+	}
+	
+	return resultat;
+}*/
+
 bool estInfrieur(GNOMBRE gn1, GNOMBRE gn2)
 {
 	bool temp;
 
-	if (gn1.size() < gn2.size())
+	if (!estNegatif(gn1) && !estNegatif(gn2))
+	{
+		if (gn1.size() < gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 0; i < gn1.size(); i++)
+			{
+				if (gn1[i] < gn2[i])
+				{
+					return true;
+				}
+                else if (gn1[i] == gn2[i])
+                {
+                   continue;
+                }
+				else
+				{
+					return false;
+				}			
+			}
+			return false;
+		}
+		else
+		{
+			return false;
+		}
+	} 
+	else if (estNegatif(gn1) && estNegatif(gn2))
+	{
+		if (gn1.size() < gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 1; i < gn1.size(); i++)
+			{
+			if (gn1[i] < gn2[i])
+				{
+					return true;
+				}
+                else if (gn1[i] == gn2[i])
+                {
+                   continue;
+                }
+				else
+				{
+					return false;
+				}			
+			}
+			return false;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (!estNegatif(gn1) && estNegatif(gn2))
+	{
+		return false;
+	}
+	else if (estNegatif(gn1) && !estNegatif(gn2))
 	{
 		return true;
-	} 
-	else
-	{
-		for (int i = 0; i < gn1.size(); i++)
-		{
-			if (gn1[i] < gn2[i])
-			{
-				temp = true;
-			}
-			else
-			{
-				temp = false;
-			}			
-		}
-		return temp;
 	}
 }
 
@@ -95,38 +225,131 @@ bool estSuperieur(GNOMBRE gn1, GNOMBRE gn2)
 {
 	bool temp;
 
-	if (gn1.size() > gn2.size())
+	if (!estNegatif(gn1) && !estNegatif(gn2))
+	{
+		if (gn1.size() > gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 0; i < gn1.size(); i++)
+			{
+				if (gn1[i] > gn2[i])
+				{
+					return true;
+				}
+                else if (gn1[i] == gn2[i])
+                {
+                   continue;
+                }
+				else
+				{
+					return false;
+				}			
+			}
+			return false;
+		}
+		else
+		{
+			return false;
+		}
+	} 
+	else if (estNegatif(gn1) && estNegatif(gn2))
+	{
+		if (gn1.size() > gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 1; i < gn1.size(); i++)
+			{
+			if (gn1[i] > gn2[i])
+				{
+					return true;
+				}
+                else if (gn1[i] == gn2[i])
+                {
+                   continue;
+                }
+				else
+				{
+					return false;
+				}			
+			}
+			return false;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (!estNegatif(gn1) && estNegatif(gn2))
 	{
 		return true;
-	} 
-	else
+	}
+	else if (estNegatif(gn1) && !estNegatif(gn2))
 	{
-		for (int i = 0; i < gn1.size(); i++)
-		{
-			if (gn1[i] > gn2[i])
-			{
-				temp = true;
-			}
-			else
-			{
-				temp = false;
-			}			
-		}
-		return temp;
+		return false;
 	}
 }
 
-bool estEgal(GNOMBRE gn1, GNOMBRE gn2)
+bool estSEgal(GNOMBRE gn1, GNOMBRE gn2)
 {
 	bool temp;
 
-	if (gn1 == gn2)
+	if (!estNegatif(gn1) && !estNegatif(gn2))
 	{
-		return true;
+		if (gn1.size() == gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 0; i < gn1.size(); i++)
+			{
+				if (gn1[i] == gn2[i])
+				{
+					temp = true;
+				}
+				else
+				{
+					return false;
+				}			
+			}
+			return temp;
+		}
+		else
+		{
+			return false;
+		}
 	} 
-	else
+	else if (estNegatif(gn1) && estNegatif(gn2))
 	{
-		return false;
+		if (gn1.size() == gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 1; i < gn1.size(); i++)
+			{
+				if (gn1[i] == gn2[i])
+				{
+					temp = true;
+				}
+				else
+				{
+					return false;
+				}			
+			}
+			return temp;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 
@@ -134,28 +357,65 @@ bool estInferieurOuEgal(GNOMBRE gn1, GNOMBRE gn2)
 {
 	bool temp;
 
-	if (gn1.size() < gn2.size())
+	if (!estNegatif(gn1) && !estNegatif(gn2))
 	{
-		return true;
-	} 
-	else if (gn1.size() == gn2.size())
-	{
-		for (int i = 0; i < gn1.size(); i++)
+		if (gn1.size() < gn2.size())
 		{
-			if (gn1[i] <= gn2[i])
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 0; i < gn1.size(); i++)
 			{
-				temp = true;
+				if (gn1[i] <= gn2[i])
+				{
+					temp = true;
+				}
+				else
+				{
+					return false;
+				}			
 			}
-			else
-			{
-				temp = false;
-			}			
+			return temp;
 		}
-		return temp;
+		else
+		{
+			return false;
+		}
+	} 
+	else if (estNegatif(gn1) && estNegatif(gn2))
+	{
+		if (gn1.size() < gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 1; i < gn1.size(); i++)
+			{
+				if (gn1[i] <= gn2[i])
+				{
+					temp = true;
+				}
+				else
+				{
+					temp = false;
+				}			
+			}
+			return temp;
+		}
+		else
+		{
+			return false;
+		}
 	}
-	else
+	else if (!estNegatif(gn1) && estNegatif(gn2))
 	{
 		return false;
+	}
+	else if (estNegatif(gn1) && !estNegatif(gn2))
+	{
+		return true;
 	}
 }
 
@@ -163,26 +423,63 @@ bool estSuperieurOuEgal(GNOMBRE gn1, GNOMBRE gn2)
 {
 	bool temp;
 
-	if (gn1.size() > gn2.size())
+	if (!estNegatif(gn1) && !estNegatif(gn2))
+	{
+		if (gn1.size() > gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 0; i < gn1.size(); i++)
+			{
+				if (gn1[i] >= gn2[i])
+				{
+					temp = true;
+				}
+				else
+				{
+					return false;
+				}			
+			}
+			return temp;
+		}
+		else
+		{
+			return false;
+		}
+	} 
+	else if (estNegatif(gn1) && estNegatif(gn2))
+	{
+		if (gn1.size() > gn2.size())
+		{
+			return true;
+		} 
+		else if (gn1.size() == gn2.size())
+		{
+			for (int i = 1; i < gn1.size(); i++)
+			{
+				if (gn1[i] >= gn2[i])
+				{
+					temp = true;
+				}
+				else
+				{
+					return false;
+				}			
+			}
+			return temp;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (!estNegatif(gn1) && estNegatif(gn2))
 	{
 		return true;
-	} 
-	else if (gn1.size() == gn2.size())
-	{
-		for (int i = 0; i < gn1.size(); i++)
-		{
-			if (gn1[i] >= gn2[i])
-			{
-				temp = true;
-			}
-			else
-			{
-				temp = false;
-			}			
-		}
-		return temp;
 	}
-	else
+	else if (estNegatif(gn1) && !estNegatif(gn2))
 	{
 		return false;
 	}
@@ -194,7 +491,7 @@ GNOMBRE saisirGn()
 	GNOMBRE n;
 	GNOMBRE nPropre;
 	bool zeroGauche = true;
-	bool estNegatif = false;
+	bool signeMoins = false;
 	cout << "   Donnez un Grand Nombre: ";
 	
 	while (c != '\n')
@@ -203,9 +500,9 @@ GNOMBRE saisirGn()
 
 		if (isdigit(c) || c == '-')
 		{
-			if (c == '-' && estNegatif == false) 
+			if (c == '-' && !signeMoins) 
 			{
-				estNegatif = true;
+				signeMoins = true;
 				n = n + c;
 				cout << c;
 			} 
@@ -215,6 +512,7 @@ GNOMBRE saisirGn()
 			}	
 			else if (isdigit(c))
 			{
+				signeMoins = true;
 				zeroGauche = false;
 				n = n + c;
 				cout << c;
@@ -224,11 +522,30 @@ GNOMBRE saisirGn()
 	return n;
 }
 
+bool estNegatif(GNOMBRE gn1)
+{
+	if (gn1[0] == '-')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/*
+bool taillePlusGrand(GNOMBRE gn1, GNOMBRE gn2)
+{
+
+}
+
 GNOMBRE afficherGn(GNOMBRE n)
 {
 	cout << n;
 	return n;
 }
+*/
 
 void menuGeneral()
 {
@@ -247,7 +564,7 @@ void menuGeneral()
 		cout << "  6) Programme 1" << endl;
 		cout << "  7) Programme 2" << endl;
 		cout << "  8) Programme 3" << endl;
-		cout << "  Q) menuQuitter le logiciel" << endl;
+		cout << "  Q) Quitter le logiciel" << endl;
 		choixMenuGeneral = _getch();
 
 		switch (choixMenuGeneral)
@@ -256,25 +573,25 @@ void menuGeneral()
 				menuAddition2Nombres();
 				break;
 			case '2':
-				menuSoustraction2Nombres();
+			//	menuSoustraction2Nombres();
 				break;
 			case '3':
-				menuMultiplication2Nombres();
+			//	menuMultiplication2Nombres();
 				break;
 			case '4':
-				menuDivision2Nombres();
+			//	menuDivision2Nombres();
 				break;
 			case '5':
-				menuMinimum2Nombre();
+			//	menuMinimum2Nombre();
 				break;
 			case '6':
-				menuProgramme1();
+			//	menuProgramme1();
 				break;
 			case '7':
-				menuProgramme1();
+			//	menuProgramme1();
 				break;
 			case '8':
-				menuProgramme1();
+			//	menuProgramme1();
 				break;
 			case 'Q':
 				menuQuitter();
@@ -289,8 +606,12 @@ void menuGeneral()
 	}while(choixMenuGeneral != 'Q' && choixMenuGeneral != 'q');
 }
 
+
 void menuAddition2Nombres()
 {
+	GNOMBRE n1;
+	GNOMBRE n2;
+	GNOMBRE resultat;
 
 	system(clear);
 	cout << "PROJET 2 - GESTION DES GRANDS NOMBRES" << endl;
@@ -307,6 +628,7 @@ void menuAddition2Nombres()
 	_getch();
 }
 
+/*
 void menuSoustraction2Nombres()
 {
 	system(clear);
@@ -382,7 +704,7 @@ void menuProgramme1()
 	cout << setfill('-') << setw(58) << ("-") << endl;
 	cout << "Appuyez sur une touche pour revenir au menu g\x82n\x82ral\n";
 	_getch();
-}
+}*/
 
 int menuQuitter()
 {
@@ -398,84 +720,8 @@ int menuQuitter()
 	return 0;
 }
 
-void addition2Nombres()
-{
-	n1 = "9999";
-	n2 = "111";
-	resultat = "";
-	int temp;
-	bool reste = false;
-	bool n1EstPlusGrand;
-	bool n1EstNegatif;
-	bool n2EstNegatif;
 
-	if (n1[0] == '-')
-	{
-		n1[0] = '0';
-		n1EstNegatif = true;
-	} 
-	else
-	{
-		n1EstNegatif = false;
-	}
-
-	if (n2[0] == '-')
-	{
-		n2[0] = '0';
-		n2EstNegatif = true;
-	}
-	else
-	{
-		n2EstNegatif = false;
-	}
-	
-	n1EstPlusGrand = n1.size() >= n2.size();
-	
-	for (int i = 0; i < (n1EstPlusGrand ? n1.size():n2.size()); i++)
-	{
-		if (n1EstPlusGrand == true)
-		{
-			cout << "fui acionado";
-			if (n2[n2.size() -1 - i] == '\0')
-			{
-				n2 = '0' + n2;
-				
-			}
-
-			temp = (n1[n1.size() - 1 - i] - 48) + (n2[n2.size() - 1 - i] - 48) + reste;
-		} 
-		else
-		{
-			if (n1[n1.size() -1 - i] == '\0')
-			{
-				n1 = '0' + n1;
-			}
-
-			temp = (n2[n2.size() - 1 - i] - 48) + (n1[n1.size() - 1 - i] - 48) + reste;
-		}
-				
-		if (temp > 9) {
-			temp = temp - 10;
-			resultat = to_string(temp) + resultat;
-			reste = true;
-			temp = 0;
-		} 
-		else
-		{
-			resultat = to_string(temp) + resultat;
-			reste = false;
-			temp = 0;
-		}
-	}
-
-	if (reste == true)
-	{
-		resultat = "1" + resultat; 
-	}
-	
-	cout << resultat;
-}
-
+/*
 void soustraction2Nombres()
 {
 	GNOMBRE n1 = "1111";
@@ -538,6 +784,8 @@ void soustraction2Nombres()
 	}
 	cout << resultat;
 }
+*/
+
 
 
 // Fonctions nécessaires pour réécrire la fonction getch() pour l'utiliser sur Mac/Linux.
@@ -579,7 +827,7 @@ char _getche(void) //Fonction qui montre les caractères.
 }
 
 void nettoyageEcran() //Nettoyage d'écran pour Win/Linux/Mac en conjonction avec le pointeur global 'clear'.
-{ 
+{
 	#if defined(_WIN32) || defined(__CYGWIN__)
 		clear = "cls";
 	#else
