@@ -56,13 +56,6 @@ int main()
 	menuGeneral();
 
 
-
-	
-	
-
-	//cout << somme("999", "111");
-
-	
 	cout << endl << endl;
 	return 0;
 }
@@ -70,62 +63,48 @@ int main()
 
 //LISTE DES FONCTIONS
 
-/*GNOMBRE somme(GNOMBRE gn1, GNOMBRE gn2);
+GNOMBRE somme(GNOMBRE gn1, GNOMBRE gn2)
 {
 	GNOMBRE resultat;
-	int temp;
-	
+	int temp, i, j;
 	bool reste = false;
-	bool n1EstPlusGrand;
-	bool n1EstNegatif;
-	bool n2EstNegatif;
+	bool n1PlusGrandTaille;
 
-	if (gn1[0] == '-')
+	n1PlusGrandTaille = gn1.size() >= gn2.size();
+	
+	if (estNegatif(gn1) && estNegatif(gn2))
 	{
 		gn1[0] = '0';
-		n1EstNegatif = true;
-	} 
-	else
-	{
-		n1EstNegatif = false;
-	}
-
-	if (gn2[0] == '-')
-	{
 		gn2[0] = '0';
-		n2EstNegatif = true;
-	}
-	else
-	{
-		n2EstNegatif = false;
 	}
 	
-	n1EstPlusGrand = gn1.size() >= gn2.size();
-	
-	for (int i = 0; i < (n1EstPlusGrand ? gn1.size():gn2.size()); i++)
+	for (i = 0; i < (n1PlusGrandTaille ? gn1.size():gn2.size()); i++)
 	{
-		if (n1EstPlusGrand == true)
+		if (n1PlusGrandTaille)
 		{
-			cout << "fui acionado";
-			if (n2[n2.size() -1 - i] == '\0')
+			if (i > gn2[gn2.size() -1 - i])
 			{
-				n2 = '0' + n2;
-				
+				temp = (gn1[gn1.size() - 1 - i] - 48) + reste;
 			}
-
-			temp = (n1[n1.size() - 1 - i] - 48) + (n2[n2.size() - 1 - i] - 48) + reste;
-		} 
+			else
+			{
+				temp = (gn1[gn1.size() - 1 - i] - 48) + (gn2[gn2.size() - 1 - i] - 48) + reste;
+			}
+		}
 		else
 		{
-			if (n1[n1.size() -1 - i] == '\0')
+			if (i > gn1[gn1.size() -1 - i])
 			{
-				n1 = '0' + n1;
+				temp = (gn2[gn2.size() - 1 - i] - 48) + reste;
 			}
-
-			temp = (n2[n2.size() - 1 - i] - 48) + (n1[n1.size() - 1 - i] - 48) + reste;
+			else
+			{
+				temp = (gn1[gn1.size() - 1 - i] - 48) + (gn2[gn2.size() - 1 - i] - 48) + reste;
+			}
 		}
 				
-		if (temp > 9) {
+		if (temp > 9) 
+		{
 			temp = temp - 10;
 			resultat = to_string(temp) + resultat;
 			reste = true;
@@ -143,11 +122,20 @@ int main()
 	{
 		resultat = "1" + resultat; 
 	}
+
+	if (resultat[0] == '0')
+	{
+		resultat[0] == '-';
+	} 
+	else if (gn1[0] == '0' && gn2[0] == '0')
+	{
+		resultat = "-" + resultat; 
+	}
 	
 	return resultat;
-}*/
-
-bool estInfrieur(GNOMBRE gn1, GNOMBRE gn2)
+}
+	
+bool estInferieur(GNOMBRE gn1, GNOMBRE gn2)
 {
 	bool temp;
 
@@ -191,7 +179,7 @@ bool estInfrieur(GNOMBRE gn1, GNOMBRE gn2)
 		{
 			for (int i = 1; i < gn1.size(); i++)
 			{
-			if (gn1[i] < gn2[i])
+			if (gn1[i] > gn2[i])
 				{
 					return true;
 				}
@@ -265,7 +253,7 @@ bool estSuperieur(GNOMBRE gn1, GNOMBRE gn2)
 		{
 			for (int i = 1; i < gn1.size(); i++)
 			{
-			if (gn1[i] > gn2[i])
+			if (gn1[i] < gn2[i])
 				{
 					return true;
 				}
@@ -295,194 +283,40 @@ bool estSuperieur(GNOMBRE gn1, GNOMBRE gn2)
 	}
 }
 
-bool estSEgal(GNOMBRE gn1, GNOMBRE gn2)
+bool estEgal(GNOMBRE gn1, GNOMBRE gn2)
 {
-	bool temp;
-
-	if (!estNegatif(gn1) && !estNegatif(gn2))
-	{
-		if (gn1.size() == gn2.size())
-		{
-			return true;
-		} 
-		else if (gn1.size() == gn2.size())
-		{
-			for (int i = 0; i < gn1.size(); i++)
-			{
-				if (gn1[i] == gn2[i])
-				{
-					temp = true;
-				}
-				else
-				{
-					return false;
-				}			
-			}
-			return temp;
-		}
-		else
-		{
-			return false;
-		}
-	} 
-	else if (estNegatif(gn1) && estNegatif(gn2))
-	{
-		if (gn1.size() == gn2.size())
-		{
-			return true;
-		} 
-		else if (gn1.size() == gn2.size())
-		{
-			for (int i = 1; i < gn1.size(); i++)
-			{
-				if (gn1[i] == gn2[i])
-				{
-					temp = true;
-				}
-				else
-				{
-					return false;
-				}			
-			}
-			return temp;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    if (gn1 == gn2)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool estInferieurOuEgal(GNOMBRE gn1, GNOMBRE gn2)
 {
-	bool temp;
-
-	if (!estNegatif(gn1) && !estNegatif(gn2))
+    if (estInferieur(gn1, gn2) || estEgal(gn1, gn2))
 	{
-		if (gn1.size() < gn2.size())
-		{
-			return true;
-		} 
-		else if (gn1.size() == gn2.size())
-		{
-			for (int i = 0; i < gn1.size(); i++)
-			{
-				if (gn1[i] <= gn2[i])
-				{
-					temp = true;
-				}
-				else
-				{
-					return false;
-				}			
-			}
-			return temp;
-		}
-		else
-		{
-			return false;
-		}
-	} 
-	else if (estNegatif(gn1) && estNegatif(gn2))
+        return true;
+    }
+    else 
 	{
-		if (gn1.size() < gn2.size())
-		{
-			return true;
-		} 
-		else if (gn1.size() == gn2.size())
-		{
-			for (int i = 1; i < gn1.size(); i++)
-			{
-				if (gn1[i] <= gn2[i])
-				{
-					temp = true;
-				}
-				else
-				{
-					temp = false;
-				}			
-			}
-			return temp;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else if (!estNegatif(gn1) && estNegatif(gn2))
-	{
-		return false;
-	}
-	else if (estNegatif(gn1) && !estNegatif(gn2))
-	{
-		return true;
-	}
+        return false;
+    }
 }
 
 bool estSuperieurOuEgal(GNOMBRE gn1, GNOMBRE gn2)
 {
-	bool temp;
-
-	if (!estNegatif(gn1) && !estNegatif(gn2))
+    if (estSuperieur(gn1, gn2) || estEgal(gn1, gn2))
 	{
-		if (gn1.size() > gn2.size())
-		{
-			return true;
-		} 
-		else if (gn1.size() == gn2.size())
-		{
-			for (int i = 0; i < gn1.size(); i++)
-			{
-				if (gn1[i] >= gn2[i])
-				{
-					temp = true;
-				}
-				else
-				{
-					return false;
-				}			
-			}
-			return temp;
-		}
-		else
-		{
-			return false;
-		}
-	} 
-	else if (estNegatif(gn1) && estNegatif(gn2))
+        return true;
+    }
+    else
 	{
-		if (gn1.size() > gn2.size())
-		{
-			return true;
-		} 
-		else if (gn1.size() == gn2.size())
-		{
-			for (int i = 1; i < gn1.size(); i++)
-			{
-				if (gn1[i] >= gn2[i])
-				{
-					temp = true;
-				}
-				else
-				{
-					return false;
-				}			
-			}
-			return temp;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else if (!estNegatif(gn1) && estNegatif(gn2))
-	{
-		return true;
-	}
-	else if (estNegatif(gn1) && !estNegatif(gn2))
-	{
-		return false;
-	}
+        return false;
+    }
 }
 
 GNOMBRE saisirGn()
@@ -606,7 +440,6 @@ void menuGeneral()
 	}while(choixMenuGeneral != 'Q' && choixMenuGeneral != 'q');
 }
 
-
 void menuAddition2Nombres()
 {
 	GNOMBRE n1;
@@ -621,7 +454,8 @@ void menuAddition2Nombres()
 	cout << endl;
 	n2 = saisirGn();
 	cout << endl;
-	cout << "   Resultat " << setfill('.') << setw(15) << (": ");
+	resultat = somme(n1, n2);
+	cout << "   Resultat " << setfill('.') << setw(15) << (": ") << resultat;
 	cout << endl;
 	cout << setfill('-') << setw(51) << ("-") << endl;
 	cout << "Appuyez sur une touche pour revenir au menu g\x82n\x82ral\n";
