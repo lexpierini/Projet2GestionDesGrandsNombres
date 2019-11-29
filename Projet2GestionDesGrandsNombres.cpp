@@ -23,7 +23,8 @@ struct termios old, current;
 
 // DÉCLARATION DES FONCTIONS
 
-GNOMBRE somme(GNOMBRE, GNOMBRE);
+GNOMBRE somme(GNOMBRE, GNOMBRE); //Faire la somme de 2 GNOMBRES.
+GNOMBRE difference(GNOMBRE, GNOMBRE); //Faire la soustraction de 2 GNOMBRES.
 
 
 bool estInferieur(GNOMBRE, GNOMBRE); //Compare deux valeurs en retournant true si la première valeur est inférieure à la seconde.
@@ -34,18 +35,20 @@ bool estSuperieurOuEgal(GNOMBRE, GNOMBRE); //Compare deux valeurs en retournant 
 GNOMBRE saisirGn(); //Capture uniquement des nombres ou le signe '-' à stocker dans une variable.
 GNOMBRE afficherGn(GNOMBRE);
 bool estNegatif(GNOMBRE); //Vérifie un nombre en retournant vrai si sa valeur est négative.
-bool taillePlusGrand(GNOMBRE, GNOMBRE);
+GNOMBRE nombreSansOperateur(GNOMBRE); // Returne le nombre sens le signal '-'.
+GNOMBRE equivalenceChiffre(GNOMBRE, GNOMBRE); //Prenez deux nombres, en considérant que n1 est supérieur à n2 et renvoyez n2 avec le même nombre de chiffres, ces chiffres étant '0'.
+GNOMBRE nombreSansZeroGauche(GNOMBRE); // Supprime les zéros non significatifs jusqu'à ce qu'une valeur > '0' soit trouvée.
 
 
 void menuGeneral(); //Affiche le menu principal avec des options à choisir.
-void menuAddition2Nombres();
-void menuSoustraction2Nombres();
+void menuAddition2Nombres(); //Affiche le menu addition pour faire la somme de 2 GNOMBRES.
+void menuSoustraction2Nombres(); //Affiche le menu soustration pour faire la soustration de 2 GNOMBRES.
 void soustraction2Nombres();
 void menuMultiplication2Nombres();
 void menuDivision2Nombres();
 void menuMinimum2Nombre();
 void menuProgramme1();
-int menuQuitter();
+int menuQuitter(); //Affiche le menu de sortir.
 
 
 int main() 
@@ -55,81 +58,172 @@ int main()
 
 	menuGeneral();
 
-
 	cout << endl << endl;
 	return 0;
 }
 
 
 //LISTE DES FONCTIONS
-
 GNOMBRE somme(GNOMBRE gn1, GNOMBRE gn2)
 {
 	GNOMBRE resultat;
-	int temp, i, j;
-	bool reste = false;
-	bool n1PlusGrandTaille;
+	int temp, i;
+	bool reste = false, gn1Negatif = false, gn2Negatif = false, resultatNegatif = false;
 
-	n1PlusGrandTaille = gn1.size() >= gn2.size();
-	
-	if (estNegatif(gn1) && estNegatif(gn2))
+	if (estNegatif(gn1) && !estNegatif(gn2))
 	{
-		gn1[0] = '0';
-		gn2[0] = '0';
+		gn1Negatif = true;
+		gn1 = nombreSansOperateur(gn1);
+		resultat = resultat + difference(gn1, gn2);
+		estSuperieur(gn1, gn2) ? resultat = '-' + resultat : resultat = nombreSansOperateur(resultat);
+
+		if (resultat == "" || resultat == "-")
+		{
+			resultat = "0";
+		}
+		return resultat;
 	}
-	
-	for (i = 0; i < (n1PlusGrandTaille ? gn1.size():gn2.size()); i++)
+	else if (estNegatif(gn1) && estNegatif(gn2))
 	{
-		if (n1PlusGrandTaille)
+		gn1Negatif = true;
+		gn1 = nombreSansOperateur(gn1);
+		gn2Negatif = true;
+		gn2 = nombreSansOperateur(gn2);
+		resultatNegatif = true;
+	}
+	else if (!estNegatif(gn1) && estNegatif(gn2))
+	{
+		gn2Negatif = true;
+		gn2 = nombreSansOperateur(gn2);
+		resultat = resultat + difference(gn1, gn2);
+		return resultat;
+	}
+
+	if (gn1.size() > gn2.size())
+	{
+		gn2 = equivalenceChiffre(gn1, gn2);
+	}
+	else
+	{
+		gn1 = equivalenceChiffre(gn2, gn1);
+	}
+
+	for (int i = 0; i < gn1.size(); i++)
+	{
+		temp = 0;
+		temp = temp + (gn1[gn1.size() -1 -i] - 48) + (gn2[gn2.size() -1 -i] -48);
+		reste = false;
+
+		if (temp > 9)
 		{
-			if (i > gn2[gn2.size() -1 - i])
-			{
-				temp = (gn1[gn1.size() - 1 - i] - 48) + reste;
-			}
-			else
-			{
-				temp = (gn1[gn1.size() - 1 - i] - 48) + (gn2[gn2.size() - 1 - i] - 48) + reste;
-			}
-		}
-		else
-		{
-			if (i > gn1[gn1.size() -1 - i])
-			{
-				temp = (gn2[gn2.size() - 1 - i] - 48) + reste;
-			}
-			else
-			{
-				temp = (gn1[gn1.size() - 1 - i] - 48) + (gn2[gn2.size() - 1 - i] - 48) + reste;
-			}
-		}
-				
-		if (temp > 9) 
-		{
-			temp = temp - 10;
-			resultat = to_string(temp) + resultat;
+			temp = temp -10;
 			reste = true;
-			temp = 0;
-		} 
-		else
-		{
-			resultat = to_string(temp) + resultat;
-			reste = false;
-			temp = 0;
+			gn1[gn1.size() -2 -i] = gn1[gn1.size() -2 -i] + 1;
 		}
+
+		resultat = to_string(temp) + resultat;
 	}
 
-	if (reste == true)
+	if (reste)
 	{
-		resultat = "1" + resultat; 
+		resultat = "1" + resultat;
 	}
 
-	if (resultat[0] == '0')
+	resultat = nombreSansZeroGauche(resultat);
+
+	if (resultat == "" || resultat == "-")
 	{
-		resultat[0] == '-';
-	} 
-	else if (gn1[0] == '0' && gn2[0] == '0')
+		resultat = "0";
+	}
+
+	if ((resultatNegatif && resultat[0] != '-') && resultat != "0")
 	{
-		resultat = "-" + resultat; 
+		resultat = "-" + resultat;
+	}
+
+	return resultat;
+}
+
+GNOMBRE difference(GNOMBRE gn1, GNOMBRE gn2)
+{
+	GNOMBRE temp2, resultat;
+	int temp, i;
+	bool gn1Negatif = false, gn2Negatif = false, resultatNegatif = false;
+
+	if (estNegatif(gn1) && !estNegatif(gn2))
+	{
+		gn1Negatif = true;
+		gn1 = nombreSansOperateur(gn1);
+		resultat = "-" + somme(gn1, gn2);
+		if (resultat == "" || resultat == "-")
+		{
+			resultat = "0";
+		}
+		return resultat;
+	}
+	else if (estNegatif(gn1) && estNegatif(gn2))
+	{
+		gn1Negatif = true;
+		nombreSansOperateur(gn1);
+		gn2Negatif = true;
+		nombreSansOperateur(gn2);
+	}
+	else if (!estNegatif(gn1) && estNegatif(gn2))
+	{
+		gn2Negatif = true;
+		gn2 = nombreSansOperateur(gn2);
+		resultat = somme(gn1, gn2);
+		//estInferieur(gn1, gn2) ? resultat = '-' + resultat : resultat = nombreSansOperateur(resultat);
+		if (resultat == "" || resultat == "-")
+		{
+			resultat = "0";
+		}
+		return resultat;
+	}
+
+	if (gn1.size() > gn2.size())
+	{
+		gn2 = equivalenceChiffre(gn1, gn2);
+	}
+	else
+	{
+		gn1 = equivalenceChiffre(gn2, gn1);
+	}
+
+	if (estInferieurOuEgal(gn1, gn2))
+	{
+		temp2 = gn1;
+		gn1 = gn2;
+		gn2 = temp2;
+		resultatNegatif = true;
+	}
+
+	//SUBTRAÇAO----------------------------------------------------------------------
+	for (int i = 0; i < gn1.size(); i++)
+	{
+		temp = 0;
+
+		if ((gn1[gn1.size() -1 -i] - 48) < (gn2[gn2.size() -1 -i] -48))
+		{
+			temp = 10;
+			gn1[gn1.size() -2 -i] = gn1[gn1.size() -2 -i] - 1;
+		}
+
+		temp = temp + (gn1[gn1.size() -1 -i] - 48) - (gn2[gn2.size() -1 -i] -48);
+		resultat = to_string(temp) + resultat;
+	}
+	//===============================================================================
+
+	resultat = nombreSansZeroGauche(resultat);
+
+	if (resultat == "" || resultat == "-")
+	{
+		resultat = "0";
+	}
+
+	if ((resultatNegatif && resultat[0] != '-') && resultat != "0")
+	{
+		resultat = "-" + resultat;
 	}
 	
 	return resultat;
@@ -356,6 +450,12 @@ GNOMBRE saisirGn()
 	return n;
 }
 
+GNOMBRE afficherGn(GNOMBRE n)
+{
+	cout << n;
+	return n;
+}
+
 bool estNegatif(GNOMBRE gn1)
 {
 	if (gn1[0] == '-')
@@ -368,18 +468,47 @@ bool estNegatif(GNOMBRE gn1)
 	}
 }
 
-/*
-bool taillePlusGrand(GNOMBRE gn1, GNOMBRE gn2)
+GNOMBRE nombreSansOperateur(GNOMBRE gn1)
 {
+	GNOMBRE temp;
+	for (int i = 1; i < gn1.size(); i++)
+	{
+		temp = temp + gn1[i];
+	}
 
+	return temp;
 }
 
-GNOMBRE afficherGn(GNOMBRE n)
+GNOMBRE equivalenceChiffre(GNOMBRE plusGrandTaille, GNOMBRE moinsGrandTaille)
 {
-	cout << n;
-	return n;
+	int j;
+	j = plusGrandTaille.size() - moinsGrandTaille.size();
+		for (int i = 0; i < j; i++)
+		{
+			moinsGrandTaille = "0" + moinsGrandTaille;
+		}
+		return moinsGrandTaille;
 }
-*/
+
+GNOMBRE nombreSansZeroGauche(GNOMBRE n)
+{
+	GNOMBRE nPropre;
+	bool zeroGauche = true;
+
+	for (int i = 0; i < n.size(); i++)
+	{
+		if (n[i] == '0' && zeroGauche == true)
+		{
+			continue;
+		}
+		else
+		{
+			zeroGauche = false;
+			nPropre = nPropre + n[i];
+		}
+	}
+	return nPropre;
+}
 
 void menuGeneral()
 {
@@ -407,7 +536,7 @@ void menuGeneral()
 				menuAddition2Nombres();
 				break;
 			case '2':
-			//	menuSoustraction2Nombres();
+				menuSoustraction2Nombres();
 				break;
 			case '3':
 			//	menuMultiplication2Nombres();
@@ -462,23 +591,30 @@ void menuAddition2Nombres()
 	_getch();
 }
 
-/*
 void menuSoustraction2Nombres()
 {
+	GNOMBRE n1;
+	GNOMBRE n2;
+	GNOMBRE resultat;
+
 	system(clear);
 	cout << "PROJET 2 - GESTION DES GRANDS NOMBRES" << endl;
 	cout << setfill('-') << setw(51) << ("-") << endl;
 	cout << "2) Soustraction de 2 nombres" << endl;
-	cout << "   Donner le Nombre 1: " << endl;
-	cout << "   Donner le Nombre 2: " << endl;
-	cout << "   Resultat " << setfill('.') << setw(11) << (": ");
-
+	n1 = saisirGn();
+	cout << endl;
+	n2 = saisirGn();
+	cout << endl;
+	resultat = difference(n1, n2);
+	cout << "   Resultat " << setfill('.') << setw(15) << (": ")  << resultat;
+	cout << endl;
 	cout << endl;
 	cout << setfill('-') << setw(51) << ("-") << endl;
 	cout << "Appuyez sur une touche pour revenir au menu g\x82n\x82ral\n";
 	_getch();
 }
 
+/*
 void menuMultiplication2Nombres()
 {
 	system(clear);
@@ -553,73 +689,6 @@ int menuQuitter()
 	_getch();
 	return 0;
 }
-
-
-/*
-void soustraction2Nombres()
-{
-	GNOMBRE n1 = "1111";
-	GNOMBRE n2 = "999";
-	GNOMBRE resultat;
-	int temp;
-	bool emprunt = false;
-	bool n1EstPlusGrand;
-	bool n1EstNegatif;
-	bool n2EstNegatif;
-
-	if (n1[0] == '-')
-	{
-		n1[0] = '0';
-		n1EstNegatif = true;
-	} 
-	else
-	{
-		n1EstNegatif = false;
-	}
-
-	if (n2[0] == '-')
-	{
-		n2[0] = '0';
-		n2EstNegatif = true;
-	}
-	else
-	{
-		n2EstNegatif = false;
-	}
-	
-	n1EstPlusGrand = n1.size() >= n2.size();
-
-	for (int i = 0; i < (n1EstPlusGrand ? n1.size():n2.size()); i++)
-	{
-		if (n1EstPlusGrand == true)
-		{
-			if (n2[n2.size() -1 - i] == '\0')
-			{
-				n2 = '0' + n2;
-			}
-		} 
-		else
-		{
-			if (n1[n1.size() -1 - i] == '\0')
-			{
-				n1 = '0' + n1;
-			}
-		}
-
-		if ((n1[n1.size() -1 - i]) > (n2[n2.size() -1 - i]))
-			{
-				temp = (n1[n1.size() - 1 - i] - 48) - (n2[n2.size() - 1 - i] - 48);
-			}
-			else
-			{
-				temp = (10 + (n1[n1.size() - 1 - i] - 48)) - (n2[n2.size() - 1 - i] - 48);
-				emprunt = true;
-			}
-	}
-	cout << resultat;
-}
-*/
-
 
 
 // Fonctions nécessaires pour réécrire la fonction getch() pour l'utiliser sur Mac/Linux.
